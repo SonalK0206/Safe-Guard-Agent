@@ -5,6 +5,34 @@ from router import route_query
 from preparedness_score import calculate_score
 
 # ----------------------------------
+# Database Initialization
+# ----------------------------------
+
+def init_db():
+    conn = sqlite3.connect("safeguard.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS chat_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            query TEXT,
+            response TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            location TEXT,
+            preparedness_score REAL
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db() 
+
+# ----------------------------------
 # Page Configuration
 # ----------------------------------
 
